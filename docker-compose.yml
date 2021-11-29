@@ -1,0 +1,15 @@
+version: '2'
+services:
+    seat_api:
+        build: .
+        container_name: seat_api
+        hostname: seat_api
+        restart: always
+        ports:
+          - 9487:8000
+    redis:
+        image: redis:6.0-alpine
+        container_name: redis
+        hostname: redis
+        ports:
+          - 6379:6379
