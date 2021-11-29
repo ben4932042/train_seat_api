@@ -3,6 +3,7 @@ from fastapi import FastAPI
 
 
 from routers import admin, seat_showing, seat_strategy, payment
+import config
 
 
 app = FastAPI()
@@ -12,8 +13,10 @@ app.include_router(seat_showing.router)
 app.include_router(seat_strategy.router)
 app.include_router(payment.router)
 
+
 async def get_redis_pool() -> Redis:
-    redis = await create_redis_pool(f"redis://:@redis:6379/0?encoding=utf-8")
+    redis_config = config.RedisSettings() 
+    redis = await create_redis_pool(f"redis://:@{redis_config.host}:{redis_config.port}/{redis_config.db}?encoding=utf-8")
     return redis
 
 @app.on_event("startup")

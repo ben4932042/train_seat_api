@@ -7,6 +7,9 @@ services:
         restart: always
         ports:
           - 9487:8000
+        environment:
+          - host: redis
+          - port: 6379
     redis:
         image: redis:6.0-alpine
         container_name: redis
