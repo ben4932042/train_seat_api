@@ -2,7 +2,8 @@ from aioredis import create_redis_pool, Redis
 from fastapi import FastAPI
 
 
-from routers import admin, seat_showing, seat_strategy, payment
+from routers import seat_showing, seat_strategy, payment
+from internal import admin
 import config
 
 description = """
