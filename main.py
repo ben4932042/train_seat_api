@@ -1,5 +1,6 @@
+import time
 from aioredis import create_redis_pool, Redis
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 
 
 from routers import seat_showing, seat_strategy, payment
@@ -74,6 +75,13 @@ app.include_router(seat_showing.router)
 app.include_router(seat_strategy.router)
 app.include_router(payment.router)
 
+@app.middleware("http")
+async def add_process_time_header(request: Request, call_next):
+    start_time = time.time()
+    response = await call_next(request)
+    process_time = time.time() - start_time
+    response.headers["X-Process-Time"] = str(process_time)
+    return response
 
 async def get_redis_pool() -> Redis:
     redis_config = config.RedisSettings() 
