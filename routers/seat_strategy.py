@@ -5,6 +5,7 @@ from typing import List
 
 from model.seat import *
 from model.order import *
+from model.ticket import *
 
 
 router = APIRouter(
@@ -47,7 +48,7 @@ async def available_seat_number(request: Request):
         return HighSpeedRailSeatNumber(**seat_dict)
 
 @router.post("/order", status_code=status.HTTP_201_CREATED)
-async def order(request: Request, orders: List[OrderInfo], uuid: str):
+async def order(request: Request, orders: List[TicketInfo], uuid: str):
         
         for seat_info in orders:
             car_no = seat_info.car_no

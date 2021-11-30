@@ -3,7 +3,7 @@ from fastapi import APIRouter, HTTPException, Request, status
 
 from model.seat import *
 from model.order import *
-
+from model.ticket import *
 
 router = APIRouter(
     prefix="/api/payment",
@@ -28,11 +28,11 @@ async def booking_seat_no(request: Request) -> HighSpeedRailSeatNo:
 
 
 @router.post("/seat_status", status_code=status.HTTP_201_CREATED)
-async def seat_status(request: Request, car_no: int, seat_no: int) -> None:
-        now_status = await request.app.state.redis.hget(car_no, seat_no)
+async def seat_status(request: Request, ticket: TicketInfo) -> None:
+        now_status = await request.app.state.redis.hget(ticket.car_no, ticket.seat_no)
 
         if now_status == '2':
-            request.app.state.redis.hset(car_no, seat_no, 0)
+            request.app.state.redis.hset(ticket.car_no, ticket.seat_no, 0)
         else:
             raise HTTPException(status_code=403, detail="seat status vertify error")
 
@@ -45,7 +45,7 @@ async def order(request: Request, uuid: str):
             try:
                 return_list.append(
                         OrderToSeatInfo(**dict(zip(
-                            ['car_seat_info', 'delete_timestamp_str'],
+                            ['ticket_info', 'delete_timestamp_str'],
                             info_dict.popitem()
                                 ))
                             )

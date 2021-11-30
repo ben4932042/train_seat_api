@@ -3,7 +3,7 @@ from fastapi import APIRouter, HTTPException, Request, Query
 
 
 router = APIRouter(
-    prefix="/api/admin",
+    prefix="/admin",
     tags=["admin"],
     responses={404: {"description": "Not found"}},
 )
