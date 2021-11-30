@@ -45,7 +45,7 @@ async def order(request: Request, uuid: str):
             try:
                 return_list.append(
                         OrderToSeatInfo(**dict(zip(
-                            ['car_seat_info', 'delete_timestamp_str'],
+                            ['ticket_info', 'delete_timestamp_str'],
                             info_dict.popitem()
                                 ))
                             )

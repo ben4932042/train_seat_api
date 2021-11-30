@@ -33,7 +33,7 @@ class OrderWithTimeStampInfo:
 
 @dataclasses.dataclass
 class OrderToSeatInfo:
-    car_seat_info: str
+    ticket_info: str
     car_no: str = dataclasses.field(init=False)
     seat_no: int = dataclasses.field(init=False)
     delete_timestamp_str: str
@@ -49,5 +49,4 @@ class OrderToSeatInfo:
         self.valid = self.valid_order()
 
     def valid_order(self):
-        print(datetime.datetime.now().timestamp(), float(self.delete_timestamp_str))
         return datetime.datetime.now().timestamp() <= float(self.delete_timestamp_str)    
