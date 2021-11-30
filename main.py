@@ -17,7 +17,7 @@ WARNING: 任何用戶服務不得串接此路線下的所有接口
 
 * **[DELETE]** reset_seat_status: 重置座位訊息
 * **[DELETE]** reset_order: 重置訂單訊息
-* **[GET]** all_order: 獲得所有訂單邊號
+* **[GET]** all_order: 獲得所有訂單編號
 
 ## seat_showing
 
