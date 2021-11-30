@@ -8,7 +8,7 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
-@router.post("/reset_seat_status")
+@router.delete("/reset_seat_status")
 async def reset_seat_status(request: Request, car_no: int=Query(default=None)):
         """[summary] \n
         0 means seat is paid. \n
@@ -24,4 +24,13 @@ async def reset_seat_status(request: Request, car_no: int=Query(default=None)):
 
         return {'message': 'success'}
 
+@router.delete("/reset_order")
+async def reset_order(request: Request):
+        await request.app.state.redis_order.flushdb()
+        return {'message': 'success'}
+
+@router.get("/all_order")
+async def all_order(request: Request):
+        order_list = await request.app.state.redis_order.keys(pattern='*')
+        return {'orders': order_list}
 

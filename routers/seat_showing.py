@@ -42,6 +42,23 @@ async def available_seat_number(request: Request):
             
         return HighSpeedRailSeatNumber(**seat_dict)
 
+@router.get("/order")
+async def order(request: Request, uuid: str):
+
+        
+        raw_seat_dict = await request.app.state.redis_order.hgetall(uuid)
+
+        
+
+
+        seat_dict[f'car_{i}'] = len([
+                SeatInfo(*[int(key),int(raw_seat_dict[key])]).seat_no
+                for key in raw_seat_dict.keys()
+                if SeatInfo(*[int(key),int(raw_seat_dict[key])]).available()
+            ])
+            
+        return HighSpeedRailSeatNumber(**seat_dict)
+
 
 
 
