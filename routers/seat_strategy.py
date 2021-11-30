@@ -1,6 +1,10 @@
+import datetime
 from aioredis import create_redis_pool, Redis
 from fastapi import APIRouter, HTTPException, Request, status
+from typing import List
+
 from model.seat import *
+from model.order import *
 
 
 router = APIRouter(
@@ -42,12 +46,27 @@ async def available_seat_number(request: Request):
             
         return HighSpeedRailSeatNumber(**seat_dict)
 
-@router.post("/seat_status", status_code=status.HTTP_201_CREATED)
-async def seat_status(request: Request, car_no: int, seat_no: int):
+@router.post("/order", status_code=status.HTTP_201_CREATED)
+async def order(request: Request, orders: List[OrderInfo], uuid: str):
+        
+        for seat_info in orders:
+            car_no = seat_info.car_no
+            seat_no = seat_info.seat_no
+            now_status = await request.app.state.redis.hget(car_no, seat_no)
+            if now_status != '1':
+                raise HTTPException(status_code=403, detail="seat status vertify error")
 
-        now_status = await request.app.state.redis.hget(car_no, seat_no)
+        for seat_info in orders:
+            order_info = OrderWithTimeStampInfo(
+                uuid=uuid,
+                car_no=seat_info.car_no,
+                seat_no=seat_info.seat_no,
+                )
 
-        if now_status == '1':
-            request.app.state.redis.hset(car_no, seat_no, 2)
-        else:
-            raise HTTPException(status_code=403, detail="seat status vertify error")
+            request.app.state.redis_order.hset(
+                    order_info.uuid,
+                    f"{order_info.car_no}_{order_info.seat_no}",
+                    order_info.delete_timestamp
+                    )
+
+            request.app.state.redis.hset(order_info.car_no, order_info.seat_no, 2)
