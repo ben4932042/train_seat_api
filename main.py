@@ -33,7 +33,6 @@ WARNING: 任何用戶服務不得串接此路線下的所有接口
 ## payment
 
 * **[GET]** booking_seat_no: 獲得詳細已訂位座位訊息
-* **[GET]** booking_seat_no: 獲得已訂位座位數量
 * **[POST]** seat_status: 修改座位狀態為已付款
 * **[GET]** order: 查詢單筆訂單資訊
 
