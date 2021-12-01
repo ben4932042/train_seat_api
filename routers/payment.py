@@ -27,7 +27,7 @@ async def booking_seat_no(request: Request) -> HighSpeedRailSeatNo:
         return HighSpeedRailSeatNo(**seat_dict)
 
 
-@router.post("/seat_status", status_code=status.HTTP_201_CREATED)
+@router.patch("/seat_status", status_code=status.HTTP_201_CREATED)
 async def seat_status(request: Request, ticket: TicketInfo) -> None:
         now_status = await request.app.state.redis.hget(ticket.car_no, ticket.seat_no)
 
