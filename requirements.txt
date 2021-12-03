@@ -9,12 +9,15 @@ dataclasses==0.8
 dependency-injector==4.37.0
 Deprecated==1.2.13
 fastapi==0.70.0
+fastapi-contrib==0.2.11
 h11==0.12.0
 hiredis==2.0.0
 httptools==0.2.0
 idna==3.3
 immutables==0.16
 importlib-metadata==4.8.2
+jaeger-client==4.6.1
+opentracing==2.4.0
 pydantic==1.8.2
 python-dotenv==0.19.2
 PyYAML==6.0
@@ -22,6 +25,9 @@ redis==4.0.2
 six==1.16.0
 sniffio==1.2.0
 starlette==0.16.0
+threadloop==1.0.2
+thrift==0.15.0
+tornado==6.1
 typing_extensions==4.0.0
 uvicorn==0.15.0
 uvloop==0.14.0
