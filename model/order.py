@@ -23,13 +23,13 @@ class OrderToSeatInfo:
     delete_timestamp_str: str
     valid: bool = dataclasses.field(init=False)
     def __post_init__(self):
-        car_seat_list = self.car_seat_info.split('_')
+        car_seat_list = self.ticket_info.split('_')
 
         if len(car_seat_list) != 2:
             raise ValueError("get unvalid car seat info.")
 
-        self.car_no = f"car_{car_seat_list[0]}"
-        self.seat_no = f"car_{car_seat_list[1]}" 
+        self.car_no = f"{car_seat_list[0]}"
+        self.seat_no = f"{car_seat_list[1]}" 
         self.valid = self.valid_order()
 
     def valid_order(self):

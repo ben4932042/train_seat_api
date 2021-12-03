@@ -1,6 +1,8 @@
 import time
 from aioredis import create_redis_pool, Redis
 from fastapi import FastAPI, Request
+from fastapi_contrib.tracing.middlewares import OpentracingMiddleware
+from fastapi_contrib.tracing.utils import setup_opentracing
 
 
 from routers import seat_showing, seat_strategy, payment, queue
@@ -102,6 +104,12 @@ async def get_queue_pool() -> Redis:
     redis_config = config.RedisSettings() 
     redis_order = await create_redis_pool(f"redis://:@{redis_config.host}:{redis_config.port}/2")
     return redis_order
+
+@app.on_event('startup')
+async def startup():
+    setup_opentracing(app)
+    app.add_middleware(OpentracingMiddleware)
+
 
 @app.on_event("startup")
 async def startup_event():

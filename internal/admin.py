@@ -16,10 +16,13 @@ async def reset_seat_status(request: Request, car_no: int=Query(default=None)):
         2 means seat is locked. \n
         """
         
-        if car_no is None:
-            for i in range(10):
-                for j in range(50):
-                    await request.app.state.redis.hset(i,j,1)
+        if car_no is not None:
+            car_list = [car_no]
+        else:
+            car_list = [i for i in range(10)]
+        for i in car_list:
+            for j in range(50):
+                await request.app.state.redis.hset(i,j,1)
         
 
         return {'message': 'success'}

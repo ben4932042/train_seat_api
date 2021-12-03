@@ -6,7 +6,7 @@ from typing import List
 from model.seat import *
 from model.order import *
 from model.ticket import *
-
+from model.default import *
 
 router = APIRouter(
     prefix="/api/seat_strategy",
@@ -71,3 +71,4 @@ async def order(request: Request, orders: List[TicketInfo], uuid: str):
                     )
 
             request.app.state.redis.hset(order_info.car_no, order_info.seat_no, 2)
+        return DefaultSuccessReturn()

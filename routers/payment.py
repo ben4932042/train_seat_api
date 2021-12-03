@@ -4,6 +4,8 @@ from fastapi import APIRouter, HTTPException, Request, status
 from model.seat import *
 from model.order import *
 from model.ticket import *
+from model.default import *
+
 
 router = APIRouter(
     prefix="/api/payment",
@@ -28,13 +30,29 @@ async def booking_seat_no(request: Request) -> HighSpeedRailSeatNo:
 
 
 @router.patch("/seat_status", status_code=status.HTTP_201_CREATED)
-async def seat_status(request: Request, ticket: TicketInfo) -> None:
+async def seat_status(request: Request, uuid: str, ticket: TicketInfo) -> None:
         now_status = await request.app.state.redis.hget(ticket.car_no, ticket.seat_no)
 
         if now_status == '2':
             request.app.state.redis.hset(ticket.car_no, ticket.seat_no, 0)
+            request.app.state.redis_order.hdel(uuid, f"{ticket.car_no}_{ticket.seat_no}") 
         else:
             raise HTTPException(status_code=403, detail="seat status vertify error")
+
+        return DefaultSuccessReturn()
+
+@router.patch("/reset_status", status_code=status.HTTP_201_CREATED)
+async def reset_status(request: Request,uuid: str, ticket: TicketInfo) -> None:
+
+        now_status = await request.app.state.redis.hget(ticket.car_no, ticket.seat_no)
+
+        if now_status == '2':
+            await request.app.state.redis.hset(ticket.car_no, ticket.seat_no, 1)
+            await request.app.state.redis_order.hdel(uuid, f"{ticket.car_no}_{ticket.seat_no}") 
+        else:
+            raise HTTPException(status_code=403, detail="seat status vertify error")
+
+        return DefaultSuccessReturn()
 
 @router.get("/order")
 async def order(request: Request, uuid: str):
