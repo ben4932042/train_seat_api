@@ -10,8 +10,8 @@ services:
         environment:
           - host=redis
           - port=6379
-          - CONTRIB_SERVICE_NAME="seat_api"
-          - CONTRIB_JAEGER_HOST="192.168.30.127"
+          - CONTRIB_SERVICE_NAME=seat_api
+          - CONTRIB_JAEGER_HOST=192.168.30.127
           - CONTRIB_JAEGER_PORT=6831
     redis:
         image: redis:6.0-alpine
