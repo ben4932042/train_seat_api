@@ -1,6 +1,7 @@
 from aioredis import create_redis_pool, Redis
 from fastapi import APIRouter, HTTPException, Request, Query
 from model.seat import *
+from model.ticket import *
 
 
 router = APIRouter(
